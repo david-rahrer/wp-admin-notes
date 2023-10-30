@@ -1,0 +1,35 @@
+/* Keep post used for notes at top of admin list and hidden from front end */
+function modify_queries( $query ) {
+    global $wpdb;
+
+    // ID of the post you want to make sticky in admin and hide in front-end
+    $sticky_post_id = 14003;
+
+    if ( ! is_admin() && $query->is_main_query() && ! is_single( $sticky_post_id ) ) {
+        // Exclude the post from the front-end
+        $query->set( 'post__not_in', array( $sticky_post_id ) );
+    } elseif ( is_admin() && $query->is_main_query() ) {
+        // Make the post sticky in admin post list
+        $screen = get_current_screen();
+        if ( 'edit-post' === $screen->id ) {
+            $query->set( 'orderby', "FIELD({$wpdb->posts}.ID, $sticky_post_id) DESC, " . $query->get('orderby') );
+        }
+    }
+}
+add_action( 'pre_get_posts', 'modify_queries' );
+
+
+/* Keep post used for notes from from displaying in widgets on fronty end */
+function exclude_post_from_front_end($where) {
+    global $wpdb;
+
+    // ID of the post you want to exclude
+    $exclude_post_id = 14003;
+
+    if (!is_admin()) {
+        $where .= " AND {$wpdb->posts}.ID != $exclude_post_id";
+    }
+
+    return $where;
+}
+add_filter('posts_where', 'exclude_post_from_front_end');
