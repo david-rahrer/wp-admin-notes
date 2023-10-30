@@ -3,7 +3,7 @@ function modify_queries( $query ) {
     global $wpdb;
 
     // ID of the post you want to make sticky in admin and hide in front-end
-    $sticky_post_id = 14003;
+    $sticky_post_id = 123;
 
     if ( ! is_admin() && $query->is_main_query() && ! is_single( $sticky_post_id ) ) {
         // Exclude the post from the front-end
@@ -24,7 +24,7 @@ function exclude_post_from_front_end($where) {
     global $wpdb;
 
     // ID of the post you want to exclude
-    $exclude_post_id = 14003;
+    $exclude_post_id = 123;
 
     if (!is_admin()) {
         $where .= " AND {$wpdb->posts}.ID != $exclude_post_id";
