@@ -1,12 +1,12 @@
 /* Hide contrast checker warning in admin */
 function custom_admin_styles() {
 ?>
-	<style type="text/css">
+<style type="text/css">
 	.block-editor-contrast-checker>.components-notice {
 		margin: 0;
 		display: none;
 	}
-    </style>
-    <?php
+</style>
+<?php
 }
 add_action('admin_head', 'custom_admin_styles');
